@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Modal } from '@material-ui/core';
 import { Button, Input } from '@material-ui/core'
 import ImageUpload from './components/ImageUpload/image-upload';
+import InstagramEmbed from 'react-instagram-embed';
 
 
 function getModalStyle() {
@@ -201,15 +202,31 @@ function App() {
       </div>
 
 
+      <div className="app__posts">
+        <div className="app__postsLeft">
+          {
+            posts.map((post, id) => (
+              <Post key={id} userName={post.userName} caption={post.caption} imageUrl={post.imageUrl} />
+            ))
+          }
+        </div>
+          <div className="app__postsRight">
+                <InstagramEmbed
+                  url='https://instagr.am/p/Zw9o4/'
+                  maxWidth={320}
+                  hideCaption={false}
+                  containerTagName='div'
+                  protocol=''
+                  injectScript
+                  onLoading={() => {}}
+                  onSuccess={() => {}}
+                  onAfterRender={() => {}}
+                  onFailure={() => {}}
+                />
+          </div>
+      </div>
+     
 
-
-      <h1>Hello Im Instagram Clone App :) :)</h1>
-
-      {
-        posts.map((post, id) => (
-          <Post key={id} userName={post.userName} caption={post.caption} imageUrl={post.imageUrl} />
-        ))
-      }
 
       {user?.displayName ? 
       (
