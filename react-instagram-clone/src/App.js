@@ -5,6 +5,7 @@ import './App.css';
 import { makeStyles } from '@material-ui/core/styles'
 import { Modal } from '@material-ui/core';
 import { Button, Input } from '@material-ui/core'
+import ImageUpload from './components/ImageUpload/image-upload';
 
 
 function getModalStyle() {
@@ -61,7 +62,7 @@ function App() {
 
 
   useEffect(() => {
-    db.collection('Posts').onSnapshot(snapshot => {
+    db.collection('Posts').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
       setPosts(snapshot.docs.map(doc => doc.data()));
     });
   }, []);
@@ -187,17 +188,19 @@ function App() {
           src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
           className="app__headerImage"
         />
+
+          {user ? (
+            <Button onClick={()=> auth.signOut()}>Logout</Button>
+          ):
+          (
+            <div className="app__loginContainer">
+                <Button onClick={()=> setOpenSignIn(true)}>Sign In</Button>
+                <Button onClick={()=> setOpen(true)}>Sign Up</Button>
+            </div>
+          )} 
       </div>
 
-      {user ? (
-        <Button onClick={()=> auth.signOut()}>Logout</Button>
-      ):
-      (
-        <div className="app__loginContainer">
-            <Button onClick={()=> setOpenSignIn(true)}>Sign In</Button>
-            <Button onClick={()=> setOpen(true)}>Sign Up</Button>
-        </div>
-      )}
+
 
 
       <h1>Hello Im Instagram Clone App :) :)</h1>
@@ -208,6 +211,13 @@ function App() {
         ))
       }
 
+      {user?.displayName ? 
+      (
+              <ImageUpload username={user.displayName} />
+      ):
+      (
+          <h2>Sorry you need to login...</h2>
+      )}
       
 
 
